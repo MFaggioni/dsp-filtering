@@ -1,2 +1,3 @@
 # dsp-filtering
-DSP Filtering - Math Department Lecture
+DSP Filtering - Math's Department Lecture
+July 2016
