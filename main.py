@@ -28,11 +28,18 @@ plt.plot_significative_sample(sample,r,sm,'Corrupt Signal')
 #Comparison Between Good and Bad Signal
 plt.plot_comparison(sm,norm_data,r,'Comparison')
 
+#Transfer function
+num = [1,-1.11114,1]
+den = [1,-1.1,0.9801]
+
 #Frequency Response of the Filter
-plt.frequency_response_magnitude([1,-1.11114,1],[1,-1.1,0.9801],'Respuesta en Frecuencia')
+plt.frequency_response_magnitude(num,den,'Respuesta en Frecuencia')
+
+#Diagrama de Polos y Ceros
+plt.plot_zero_pole_diagram(num,den,'Diagrama de Ceros y Polos')
 
 #Filtering Data
-yss = sg.lfilter([1,-1.11114,1],[1,-1.1,0.9801],r)
+yss = sg.lfilter(num,den,r)
 
 plt.plot_significative_sample(sample,yss,sm,'Salida del Sistema')
 plt.plot_comparison(sm,norm_data,yss,'Comparacion')

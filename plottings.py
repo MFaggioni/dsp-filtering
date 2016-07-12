@@ -4,6 +4,7 @@ import numpy as np
 import plotly.plotly as py
 import scipy.fftpack
 import plotly as ply
+import control as control
 ply.tools.set_credentials_file(username='Faggioni', api_key='kd2jy07h6q')
 """
     frequency_response_magnitude:
@@ -154,6 +155,15 @@ def plot_comparison(number_of_samples,y1,y2,title):
         plt.xlabel('Samples')
         plt.ylabel('Magnitude')
         plt.show()
+
+    except:
+        print('Error al Introducir los Datos, Vuelva a Intentarlo')
+
+
+def plot_zero_pole_diagram(num,den,title):
+    try:
+        sys = control.tf(num,den)
+        control.matlab.pzmap(sys,True,title)
 
     except:
         print('Error al Introducir los Datos, Vuelva a Intentarlo')
