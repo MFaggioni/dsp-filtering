@@ -17,7 +17,7 @@ def corrupt_signal(y,max,ang_freq,phase):
     try:
         signal_corrupt = list(range(len(y)))
         for i in range(len(signal_corrupt)):
-            signal_corrupt[i] = y[i] + max*math.cos(ang_freq*math.pi*i + phase)
+            signal_corrupt[i] = y[i] + (max * math.cos((ang_freq * math.pi * float(i)) + phase))
         return signal_corrupt
     except ValueError:
         print('Error al Introducir los Datos, Vuelva a Intentarlo')

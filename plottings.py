@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from scipy import signal as sg
 import numpy as np
 import plotly.plotly as py
+import scipy.fftpack
 import plotly as ply
 ply.tools.set_credentials_file(username='Faggioni', api_key='kd2jy07h6q')
 """
@@ -107,38 +108,52 @@ def plot_significative_sample(x,y,number_of_samples,title):
 """
     plot_fft:
     args:
-        y:  sample
-
+        y:  samples
         title:  Title of the Figure and Plot
     return:
         Plot a Smaller number of Samples
 """
 def plot_fft(y,title):
         try:
-            Fs = 100.0;  # sampling rate
-            Ts = 1.0/Fs; # sampling interval
-            t = np.arange(0,1,Ts) # time vector
+            # Number of samplepoints
+            N = 6000
+            Fs=100
+            # sample spacing
+            T = 1.0 / Fs
+            x = np.linspace(0.0, N*T, N)
+            #y = np.sin(50.0 * 2.0*np.pi*x) + 0.5*np.sin(80.0 * 2.0*np.pi*x)
+            yf = scipy.fftpack.fft(y)
+            xf = np.linspace(0.0, 1.0/(2.0*T), N/2)
 
-            #ff = 5;   # frequency of the signal
-            #y = np.sin(2*np.pi*ff*t)
-
-            n = len(y) # length of the signal
-            k = np.arange(n)
-            T = n/Fs
-            frq = k/T # two sides frequency range
-            frq = frq[range(n/2)] # one side frequency range
-
-            Y = np.fft.fft(y)/n # fft computing and normalization
-            Y = Y[range(n/2)]
-
-            fig, ax = plt.subplots(2, 1)
-            ax[0].plot(t,y)
-            ax[0].set_xlabel('Tiempo')
-            ax[0].set_ylabel('Amplitud')
-            ax[1].plot(frq,abs(Y),'r') # plotting the spectrum
-            ax[1].set_xlabel('Freq (Hz)')
-            ax[1].set_ylabel('|Y(freq)|')
-            plot_url = py.plot_mpl(fig, filename='Fouier Transform')
+            fig, ax = plt.subplots()
+            ax.plot(xf, 2.0/N * np.abs(yf[:N/2]))
+            plt.grid()
+            plt.title(title)
+            plt.xlabel('Frequency')
+            plt.ylabel('Amplitude')
+            plt.show()
 
         except ValueError:
             print('Error al Introducir los Datos, Vuelva a Intentarlo')
+
+def plot_comparison(number_of_samples,y1,y2,title):
+    try:
+        x=list(range(number_of_samples))
+        sgn1=list(range(number_of_samples))
+        sgn2=list(range(number_of_samples))
+        for i in range(len(x)):
+            sgn1[i] = y1[i]
+            sgn2[i] = y2[i]
+
+        plt.figure(title)
+        plt.plot(x,sgn1,'r',label='Entrada')
+        plt.plot(x,sgn2,'b',label='Senal Corrompida')
+        plt.grid()
+        plt.legend()
+        plt.title(title)
+        plt.xlabel('Samples')
+        plt.ylabel('Magnitude')
+        plt.show()
+
+    except:
+        print('Error al Introducir los Datos, Vuelva a Intentarlo')
